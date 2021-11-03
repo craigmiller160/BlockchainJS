@@ -4,7 +4,7 @@ export class Blockchain<D> {
     #chain: ReadonlyArray<Block<D>>;
     #difficulty: number = 2;
     constructor(existingChain?: ReadonlyArray<Block<D>>) {
-        this.#chain = existingChain ?? [new Block()];
+        this.#chain = existingChain ?? [Block.genesis<D>()];
     }
 
     getLatestBlock(): Block<D> {

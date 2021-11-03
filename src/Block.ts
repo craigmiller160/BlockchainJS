@@ -1,7 +1,6 @@
 import SHA256 from 'crypto-js/sha256';
 import { format } from 'date-fns';
 
-
 const TIMESTAMP_FORMAT = 'yyyyMMddHHmmssSSS';
 
 export class Block<D> {

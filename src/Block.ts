@@ -13,9 +13,9 @@ export class Block<D> {
         return new Block();
     }
 
-    hash: string; // TODO make it readonly again
+    readonly hash: string;
     readonly timestamp: string;
-    nonce: number = 0; // TODO make it readonly
+    readonly nonce: number;
 
     private constructor(
         public readonly data?: D,
@@ -25,16 +25,19 @@ export class Block<D> {
         private readonly miningDifficulty: number = 0
     ) {
         this.timestamp = timestamp ?? format(new Date(), TIMESTAMP_FORMAT);
-        this.hash = this.calculateHash();
+        const [hash,nonce] = this.calculateHash();
+        this.hash = hash;
+        this.nonce = nonce;
     }
 
-    calculateHash() {
+    calculateHash(): [string,number] {
         let hash = '';
+        let nonce = 0;
         while(hash.substring(0, this.miningDifficulty) !== Array(this.miningDifficulty + 1).join('0')) {
             hash = SHA256(this.nonce + this.index + this.previousHash + this.timestamp + JSON.stringify(this.data)).toString();
-            this.nonce++;
+            nonce++;
         }
-        return hash;
+        return [hash,nonce];
     }
 
     withBlockchainIntegration(miningDifficulty: number, index: number, previousHash: string): Block<D> {

@@ -28,9 +28,9 @@ export class Block<D> {
         this.hash = this.calculateHash();
     }
 
-    calculateHash(miningDifficulty: number = 0) {
+    calculateHash() {
         let hash = '';
-        while(hash.substring(0, miningDifficulty) !== Array(miningDifficulty + 1).join('0')) {
+        while(hash.substring(0, this.miningDifficulty) !== Array(this.miningDifficulty + 1).join('0')) {
             hash = SHA256(this.nonce + this.index + this.previousHash + this.timestamp + JSON.stringify(this.data)).toString();
             this.nonce++;
         }

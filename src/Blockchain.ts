@@ -29,7 +29,7 @@ export class Blockchain<D> {
 
     isChainValid(): boolean {
         return this.#chain.slice(1)
-            .reduce((status: boolean, block, index, currentChain) => {
+            .reduce((status: boolean, block, index) => {
                 if (!status) {
                     return status;
                 }

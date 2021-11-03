@@ -25,16 +25,16 @@ export class Block<D> {
         private readonly miningDifficulty: number = 0
     ) {
         this.timestamp = timestamp ?? format(new Date(), TIMESTAMP_FORMAT);
-        const [hash,nonce] = this.calculateHash();
+        const [hash,nonce] = this.calculateHashAndNonce();
         this.hash = hash;
         this.nonce = nonce;
     }
 
-    calculateHash(): [string,number] {
+    calculateHashAndNonce(): [string,number] {
         let hash = '';
         let nonce = 0;
         while(hash.substring(0, this.miningDifficulty) !== Array(this.miningDifficulty + 1).join('0')) {
-            hash = SHA256(this.nonce + this.index + this.previousHash + this.timestamp + JSON.stringify(this.data)).toString();
+            hash = SHA256(nonce + this.index + this.previousHash + this.timestamp + JSON.stringify(this.data)).toString();
             nonce++;
         }
         return [hash,nonce];

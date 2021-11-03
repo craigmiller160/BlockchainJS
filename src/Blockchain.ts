@@ -32,8 +32,10 @@ export class Blockchain<D> {
                 }
                 // 'index' in reduce after slice is actually 'index - 1' on the base chain
                 const prevBlock = this.#chain[index];
+                const [calcHash,calcNonce] = block.calculateHashAndNonce();
 
-                return block.hash === block.calculateHash() &&
+                return block.hash === calcHash &&
+                    block.nonce === calcNonce &&
                     block.previousHash === prevBlock.hash;
             }, true);
     }

@@ -37,4 +37,17 @@ export class Blockchain {
         ];
     }
 
+    isChainValid(): boolean {
+        return this.chain.slice(1)
+            .reduce((status: boolean, block, index, currentChain) => {
+                if (!status) {
+                    return status;
+                }
+                const prevBlock = currentChain[index];
+
+                return block.hash === block.calculateHash() &&
+                    block.previousHash === prevBlock.hash;
+            }, true);
+    }
+
 }

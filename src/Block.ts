@@ -15,10 +15,10 @@ export class Block {
         timestamp?: string
     ) {
         this.timestamp = timestamp ?? format(new Date(), TIMESTAMP_FORMAT);
-        this.hash = this.#calculateHash();
+        this.hash = this.calculateHash();
     }
 
-    #calculateHash() {
+    calculateHash() {
         return SHA256(this.index + this.previousHash + this.timestamp + JSON.stringify(this.data)).toString();
     }
 

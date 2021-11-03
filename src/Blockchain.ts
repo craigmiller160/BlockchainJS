@@ -56,16 +56,6 @@ export class Blockchain {
         ];
     }
 
-    // TODO maybe remove this?
-    addBlock(newBlock: Block) {
-        const integratedNewBlock = newBlock.withBlockchainIntegration(this.#difficulty, this.getLatestBlock().hash);
-        this.#chain = [
-            ...this.#chain,
-            integratedNewBlock
-        ];
-        this.#difficulty = Math.round(this.#chain.length / this.#difficultyDivisor);
-    }
-
     isChainValid(): boolean {
         return this.#chain.slice(1)
             .reduce((status: boolean, block, index) => {

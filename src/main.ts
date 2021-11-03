@@ -11,3 +11,6 @@ myCoinBlockChain.minePendingTransactions('address3');
 
 console.log(JSON.stringify(myCoinBlockChain.getChain(), null, 2));
 console.log(`Is Chain Valid: ${myCoinBlockChain.isChainValid()}`);
+
+console.log(myCoinBlockChain.getBalanceOfAddress('address1'));
+console.log(myCoinBlockChain.getBalanceOfAddress('address2'));

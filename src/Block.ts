@@ -9,7 +9,7 @@ export class Block<D> {
     readonly timestamp: string;
 
     constructor(
-        public readonly data: D,
+        public readonly data?: D,
         public readonly index: number = 0,
         public readonly previousHash: string = '',
         timestamp?: string

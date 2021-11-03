@@ -1,13 +1,9 @@
 import { Block } from './Block';
 
 export class Blockchain<D> {
-    // static #createGenesisBlock(): Block<D> {
-    //     return new Block('Genesis Block');
-    // }
-
     private chain: ReadonlyArray<Block<D>>;
     constructor(existingChain?: ReadonlyArray<Block<D>>) {
-        this.chain = existingChain ?? [Blockchain.#createGenesisBlock()];
+        this.chain = existingChain ?? [new Block()];
     }
 
     getLatestBlock(): Block<D> {

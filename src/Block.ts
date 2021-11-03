@@ -5,12 +5,12 @@ import {Transaction} from './Transaction';
 const TIMESTAMP_FORMAT = 'yyyyMMddHHmmssSSS';
 
 export class Block {
-    static fromTransactions(transactions?: ReadonlyArray<Transaction>): Block {
+    static fromTransactions(transactions: ReadonlyArray<Transaction>): Block {
         return new Block(transactions);
     }
 
     static genesis(): Block {
-        return new Block();
+        return new Block([]);
     }
 
     readonly hash: string;
@@ -18,7 +18,7 @@ export class Block {
     readonly nonce: number;
 
     private constructor(
-        public readonly transactions?: ReadonlyArray<Transaction>,
+        public readonly transactions: ReadonlyArray<Transaction>,
         public readonly previousHash: string = '',
         public readonly miningDifficulty: number = 0,
         timestamp?: string

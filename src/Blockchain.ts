@@ -1,24 +1,24 @@
 import { Block } from './Block';
 
-export class Blockchain {
-    static #createGenesisBlock(): Block {
-        return new Block('Genesis Block');
-    }
+export class Blockchain<D> {
+    // static #createGenesisBlock(): Block<D> {
+    //     return new Block('Genesis Block');
+    // }
 
-    private chain: ReadonlyArray<Block>;
-    constructor(existingChain?: ReadonlyArray<Block>) {
+    private chain: ReadonlyArray<Block<D>>;
+    constructor(existingChain?: ReadonlyArray<Block<D>>) {
         this.chain = existingChain ?? [Blockchain.#createGenesisBlock()];
     }
 
-    getLatestBlock(): Block {
+    getLatestBlock(): Block<D> {
         return this.chain[this.chain.length - 1];
     }
 
-    getChain(): ReadonlyArray<Block> {
+    getChain(): ReadonlyArray<Block<D>> {
         return this.chain;
     }
 
-    addBlock(newBlock: Block) {
+    addBlock(newBlock: Block<D>) {
         const index = this.chain.length;
         const newBlockWithPreviousHash = newBlock.withIndexAndPreviousHash(index, this.getLatestBlock().hash);
         this.chain = [

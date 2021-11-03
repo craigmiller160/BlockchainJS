@@ -1,5 +1,6 @@
 import SHA256 from 'crypto-js/sha256';
 
+// TODO need to handle adding index when added to Blockchain and auto-generating timestamp
 export class Block {
     readonly hash: string;
 

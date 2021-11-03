@@ -22,7 +22,7 @@ export class Block<D> {
         public readonly index: number = 0,
         public readonly previousHash: string = '',
         timestamp?: string,
-        private readonly miningDifficulty: number = 0
+        public readonly miningDifficulty: number = 0
     ) {
         this.timestamp = timestamp ?? format(new Date(), TIMESTAMP_FORMAT);
         const [hash,nonce] = this.calculateHashAndNonce();

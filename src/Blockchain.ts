@@ -18,16 +18,6 @@ export class Blockchain {
         return this.chain;
     }
 
-    withNewBlock(newBlock: Block): Blockchain {
-        const index = this.chain.length;
-        const newBlockWithPreviousHash = newBlock.withIndexAndPreviousHash(index, this.getLatestBlock().hash);
-        const newChain: ReadonlyArray<Block> = [
-            ...this.chain,
-            newBlockWithPreviousHash
-        ];
-        return new Blockchain(newChain);
-    }
-
     addBlock(newBlock: Block) {
         const index = this.chain.length;
         const newBlockWithPreviousHash = newBlock.withIndexAndPreviousHash(index, this.getLatestBlock().hash);

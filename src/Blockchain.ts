@@ -1,11 +1,8 @@
-import { format } from 'date-fns';
 import { Block } from './Block';
-
-const TIMESTAMP_FORMAT = 'yyyyMMddHHmmssSSS';
 
 export class Blockchain {
     static #createGenesisBlock(): Block {
-        return new Block(0, format(new Date(), TIMESTAMP_FORMAT), 'Genesis Block', '');
+        return new Block('Genesis Block');
     }
 
     private chain: ReadonlyArray<Block>;
@@ -22,7 +19,8 @@ export class Blockchain {
     }
 
     withNewBlock(newBlock: Block): Blockchain {
-        const newBlockWithPreviousHash = newBlock.withPreviousHash(this.getLatestBlock().hash);
+        const index = this.chain.length;
+        const newBlockWithPreviousHash = newBlock.withIndexAndPreviousHash(index, this.getLatestBlock().hash);
         const newChain: ReadonlyArray<Block> = [
             ...this.chain,
             newBlockWithPreviousHash
@@ -31,7 +29,8 @@ export class Blockchain {
     }
 
     addBlock(newBlock: Block) {
-        const newBlockWithPreviousHash = newBlock.withPreviousHash(this.getLatestBlock().hash);
+        const index = this.chain.length;
+        const newBlockWithPreviousHash = newBlock.withIndexAndPreviousHash(index, this.getLatestBlock().hash);
         this.chain = [
             ...this.chain,
             newBlockWithPreviousHash

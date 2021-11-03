@@ -43,7 +43,8 @@ export class Blockchain {
                 if (!status) {
                     return status;
                 }
-                const prevBlock = currentChain[index];
+                // 'index' in reduce after slice is actually 'index - 1' on the base chain
+                const prevBlock = this.chain[index];
 
                 return block.hash === block.calculateHash() &&
                     block.previousHash === prevBlock.hash;

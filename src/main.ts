@@ -6,3 +6,4 @@ myCoinBlockChain.addBlock(new Block({ amount: 4 }));
 myCoinBlockChain.addBlock(new Block({ amount: 10 }));
 
 console.log(JSON.stringify(myCoinBlockChain, null, 2));
+console.log(`Is Chain Valid: ${myCoinBlockChain.isChainValid()}`);

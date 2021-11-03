@@ -2,7 +2,7 @@ import { Block } from './Block';
 
 export class Blockchain<D> {
     #chain: ReadonlyArray<Block<D>>;
-    #difficulty: number = 2;
+    #difficulty: number = 0;
     constructor(existingChain?: ReadonlyArray<Block<D>>) {
         this.#chain = existingChain ?? [Block.genesis<D>()];
     }
@@ -22,6 +22,7 @@ export class Blockchain<D> {
             ...this.#chain,
             integratedNewBlock
         ];
+        this.#difficulty = Math.round(this.#chain.length / 5);
     }
 
     isChainValid(): boolean {

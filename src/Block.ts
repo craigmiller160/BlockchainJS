@@ -1,14 +1,15 @@
 import SHA256 from 'crypto-js/sha256';
 import { format } from 'date-fns';
+import {Transaction} from './Transaction';
 
 const TIMESTAMP_FORMAT = 'yyyyMMddHHmmssSSS';
 
-export class Block<D> {
-    static fromTransactions<D>(transactions?: ReadonlyArray<D>): Block<D> {
+export class Block {
+    static fromTransactions(transactions?: ReadonlyArray<Transaction>): Block {
         return new Block(transactions);
     }
 
-    static genesis<D>(): Block<D> {
+    static genesis(): Block {
         return new Block();
     }
 
@@ -17,7 +18,7 @@ export class Block<D> {
     readonly nonce: number;
 
     private constructor(
-        public readonly transactions?: ReadonlyArray<D>,
+        public readonly transactions?: ReadonlyArray<Transaction>,
         public readonly previousHash: string = '',
         public readonly miningDifficulty: number = 0,
         timestamp?: string
@@ -38,7 +39,7 @@ export class Block<D> {
         return [hash,nonce];
     }
 
-    withBlockchainIntegration(miningDifficulty: number, previousHash: string): Block<D> {
+    withBlockchainIntegration(miningDifficulty: number, previousHash: string): Block {
         return new Block(this.transactions, previousHash, miningDifficulty, this.timestamp);
     }
 

@@ -1,23 +1,23 @@
 import { Block } from './Block';
 
-export class Blockchain<D> {
-    #chain: ReadonlyArray<Block<D>>;
+export class Blockchain {
+    #chain: ReadonlyArray<Block>;
     #difficulty: number = 0;
     readonly #difficultyDivisor: number;
     constructor(difficultyDivisor: number = 5) {
-        this.#chain = [Block.genesis<D>()];
+        this.#chain = [Block.genesis()];
         this.#difficultyDivisor = difficultyDivisor;
     }
 
-    getLatestBlock(): Block<D> {
+    getLatestBlock(): Block {
         return this.#chain[this.#chain.length - 1];
     }
 
-    getChain(): ReadonlyArray<Block<D>> {
+    getChain(): ReadonlyArray<Block> {
         return this.#chain;
     }
 
-    addBlock(newBlock: Block<D>) {
+    addBlock(newBlock: Block) {
         const integratedNewBlock = newBlock.withBlockchainIntegration(this.#difficulty, this.getLatestBlock().hash);
         this.#chain = [
             ...this.#chain,

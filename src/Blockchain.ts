@@ -8,13 +8,17 @@ export class Blockchain {
         return new Block(0, format(new Date(), TIMESTAMP_FORMAT), 'Genesis Block', '');
     }
 
-    readonly chain: ReadonlyArray<Block>;
+    private chain: ReadonlyArray<Block>;
     constructor(existingChain?: ReadonlyArray<Block>) {
         this.chain = existingChain ?? [Blockchain.#createGenesisBlock()];
     }
 
     getLatestBlock(): Block {
         return this.chain[this.chain.length - 1];
+    }
+
+    getChain(): ReadonlyArray<Block> {
+        return this.chain;
     }
 
     withNewBlock(newBlock: Block): Blockchain {
@@ -24,6 +28,14 @@ export class Blockchain {
             newBlockWithPreviousHash
         ];
         return new Blockchain(newChain);
+    }
+
+    addBlock(newBlock: Block) {
+        const newBlockWithPreviousHash = newBlock.withPreviousHash(this.getLatestBlock().hash);
+        this.chain = [
+            ...this.chain,
+            newBlockWithPreviousHash
+        ];
     }
 
 }

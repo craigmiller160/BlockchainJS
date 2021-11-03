@@ -23,8 +23,13 @@ export class Block<D> {
         return SHA256(this.nonce + this.index + this.previousHash + this.timestamp + JSON.stringify(this.data)).toString();
     }
 
-    withIndexAndPreviousHash(index: number, previousHash: string): Block<D> {
-        return new Block(this.data, index, previousHash, this.timestamp);
+    integratedWithChain(miningDifficulty: number, index: number, previousHash: string): Block<D> {
+        const newBlock = new Block(this.data, index, previousHash, this.timestamp);
+        while(newBlock.hash.substring(0, miningDifficulty) !== Array(miningDifficulty + 1).join('0')) {
+            newBlock.hash = newBlock.calculateHash();
+            newBlock.nonce++;
+        }
+        return newBlock;
     }
 
     mineBlock(difficulty: number) {

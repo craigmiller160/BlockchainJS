@@ -17,11 +17,10 @@ export class Blockchain<D> {
 
     addBlock(newBlock: Block<D>) {
         const index = this.#chain.length;
-        const newBlockWithPreviousHash = newBlock.withIndexAndPreviousHash(index, this.getLatestBlock().hash);
-        newBlockWithPreviousHash.mineBlock(this.#difficulty); // TODO incorporate it into the block creation
+        const integratedNewBlock = newBlock.integratedWithChain(this.#difficulty, index, this.getLatestBlock().hash);
         this.#chain = [
             ...this.#chain,
-            newBlockWithPreviousHash
+            integratedNewBlock
         ];
     }
 

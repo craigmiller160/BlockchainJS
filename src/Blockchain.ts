@@ -24,6 +24,10 @@ export class Blockchain {
     getBalanceOfAddress(address: string): number {
         return this.#chain.reduce((balance, block) => {
             return balance + block.transactions.reduce((blockBalance, transaction) => {
+                if (transaction.fromAddress === address) {
+                    return blockBalance - transaction.amount;
+                }
+
                 if (transaction.toAddress === address) {
                     return blockBalance + transaction.amount;
                 }
@@ -32,7 +36,6 @@ export class Blockchain {
         }, 0);
     }
 
-    // TODO work on this
     addTransaction(transaction: Transaction) {
         this.#pendingTransactions = [
             ...this.#pendingTransactions,

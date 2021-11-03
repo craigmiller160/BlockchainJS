@@ -16,4 +16,8 @@ export class Block {
         return SHA256(this.index + this.previousHash + this.timestamp + JSON.stringify(this.data)).toString();
     }
 
+    withPreviousHash(previousHash: string): Block {
+        return new Block(this.index, this.timestamp, this.data, previousHash);
+    }
+
 }

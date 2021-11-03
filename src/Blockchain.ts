@@ -2,6 +2,7 @@ import { Block } from './Block';
 
 export class Blockchain<D> {
     #chain: ReadonlyArray<Block<D>>;
+    #difficulty: number = 2;
     constructor(existingChain?: ReadonlyArray<Block<D>>) {
         this.#chain = existingChain ?? [new Block()];
     }
@@ -17,6 +18,7 @@ export class Blockchain<D> {
     addBlock(newBlock: Block<D>) {
         const index = this.#chain.length;
         const newBlockWithPreviousHash = newBlock.withIndexAndPreviousHash(index, this.getLatestBlock().hash);
+        newBlockWithPreviousHash.mineBlock(this.#difficulty); // TODO incorporate it into the block creation
         this.#chain = [
             ...this.#chain,
             newBlockWithPreviousHash

@@ -1,9 +1,13 @@
 import { Block } from './Block';
+import {Transaction} from './Transaction';
 
 export class Blockchain {
     #chain: ReadonlyArray<Block>;
     #difficulty: number = 0;
     readonly #difficultyDivisor: number;
+    #pendingTransactions: ReadonlyArray<Transaction> = [];
+    #miningReward: number = 100;
+
     constructor(difficultyDivisor: number = 5) {
         this.#chain = [Block.genesis()];
         this.#difficultyDivisor = difficultyDivisor;
@@ -17,6 +21,39 @@ export class Blockchain {
         return this.#chain;
     }
 
+    getBalanceOfAddress(address: string): number {
+        return this.#chain.reduce((balance, block) => {
+            return balance + block.transactions.reduce((blockBalance, transaction) => {
+                if (transaction.toAddress === address) {
+                    return blockBalance + transaction.amount;
+                }
+                return blockBalance;
+            }, 0);
+        }, 0);
+    }
+
+    // TODO work on this
+    addTransaction(transaction: Transaction) {
+        this.#pendingTransactions = [
+            ...this.#pendingTransactions,
+            transaction
+        ];
+    }
+
+    minePendingTransactions(miningRewardAddress: string) {
+        const block = Block.fromTransactions(this.#pendingTransactions);
+        const integratedBlock = block.withBlockchainIntegration(this.#difficulty, this.getLatestBlock().hash);
+        this.#chain = [
+            ...this.#chain,
+            integratedBlock
+        ];
+        this.#difficulty = Math.round(this.#chain.length / this.#difficultyDivisor);
+        this.#pendingTransactions = [
+            new Transaction(this.#miningReward, miningRewardAddress)
+        ];
+    }
+
+    // TODO maybe remove this?
     addBlock(newBlock: Block) {
         const integratedNewBlock = newBlock.withBlockchainIntegration(this.#difficulty, this.getLatestBlock().hash);
         this.#chain = [

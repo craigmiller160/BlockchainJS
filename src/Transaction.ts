@@ -1,7 +1,7 @@
 export class Transaction {
     constructor(
-        public fromAddress: string,
+        public amount: number,
         public toAddress: string,
-        public amount: number
+        public fromAddress?: string
     ) {}
 }

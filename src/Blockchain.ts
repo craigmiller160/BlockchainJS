@@ -3,8 +3,10 @@ import { Block } from './Block';
 export class Blockchain<D> {
     #chain: ReadonlyArray<Block<D>>;
     #difficulty: number = 0;
-    constructor(existingChain?: ReadonlyArray<Block<D>>) {
-        this.#chain = existingChain ?? [Block.genesis<D>()];
+    readonly #difficultyDivisor: number;
+    constructor(difficultyDivisor: number = 5) {
+        this.#chain = [Block.genesis<D>()];
+        this.#difficultyDivisor = difficultyDivisor;
     }
 
     getLatestBlock(): Block<D> {
@@ -22,7 +24,7 @@ export class Blockchain<D> {
             ...this.#chain,
             integratedNewBlock
         ];
-        this.#difficulty = Math.round(this.#chain.length / 5);
+        this.#difficulty = Math.round(this.#chain.length / this.#difficultyDivisor);
     }
 
     isChainValid(): boolean {

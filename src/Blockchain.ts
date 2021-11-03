@@ -18,8 +18,7 @@ export class Blockchain<D> {
     }
 
     addBlock(newBlock: Block<D>) {
-        const index = this.#chain.length;
-        const integratedNewBlock = newBlock.withBlockchainIntegration(this.#difficulty, index, this.getLatestBlock().hash);
+        const integratedNewBlock = newBlock.withBlockchainIntegration(this.#difficulty, this.getLatestBlock().hash);
         this.#chain = [
             ...this.#chain,
             integratedNewBlock

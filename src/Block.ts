@@ -32,10 +32,10 @@ export class Block {
     calculateHashAndNonce(): [string,number] {
         let hash = '';
         let nonce = 0;
-        while(hash.substring(0, this.miningDifficulty) !== Array(this.miningDifficulty + 1).join('0')) {
+        do {
             hash = SHA256(nonce + this.previousHash + this.timestamp + JSON.stringify(this.transactions)).toString();
             nonce++;
-        }
+        } while(hash.substring(0, this.miningDifficulty) !== Array(this.miningDifficulty + 1).join('0'));
         return [hash,nonce];
     }
 

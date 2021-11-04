@@ -24,7 +24,7 @@ export class Block {
         timestamp?: string
     ) {
         this.timestamp = timestamp ?? format(new Date(), TIMESTAMP_FORMAT);
-        const [hash,nonce] = this.calculateHashAndNonce();
+        const [hash,nonce] = this.#calculateHashAndNonce();
         this.hash = hash;
         this.nonce = nonce;
     }
@@ -33,7 +33,7 @@ export class Block {
         return SHA256(nonce + this.previousHash + this.timestamp + JSON.stringify(this.transactions)).toString();
     }
 
-    calculateHashAndNonce(): [string,number] {
+    #calculateHashAndNonce(): [string,number] {
         let nonce = 0;
         let hash = this.calculateHash(nonce);
 

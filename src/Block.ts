@@ -29,13 +29,18 @@ export class Block {
         this.nonce = nonce;
     }
 
+    calculateHash(nonce: number = this.nonce): string {
+        return SHA256(nonce + this.previousHash + this.timestamp + JSON.stringify(this.transactions)).toString();
+    }
+
     calculateHashAndNonce(): [string,number] {
-        let hash = '';
         let nonce = 0;
-        do {
-            hash = SHA256(nonce + this.previousHash + this.timestamp + JSON.stringify(this.transactions)).toString();
+        let hash = this.calculateHash(nonce);
+
+        while(hash.substring(0, this.miningDifficulty) !== Array(this.miningDifficulty + 1).join('0')) {
             nonce++;
-        } while(hash.substring(0, this.miningDifficulty) !== Array(this.miningDifficulty + 1).join('0'));
+            hash = this.calculateHash(nonce);
+        }
         return [hash,nonce];
     }
 
